@@ -14,4 +14,9 @@ public partial class Customer
     public DateTime? DateOfBirth { get; set; }
 
     public virtual ICollection<Sale> Sales { get; set; } = new List<Sale>();
+
+    public static implicit operator Customer(ValueTask<Customer?> v)
+    {
+        throw new NotImplementedException();
+    }
 }

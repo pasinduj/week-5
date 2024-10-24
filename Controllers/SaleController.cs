@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using IndustryConnect_Week5_WebApi.Models;
+using IndustryConnect_Week5_WebApi.Mappers;
 
 namespace IndustryConnect_Week5_WebApi.Controllers
 {
@@ -24,22 +25,27 @@ namespace IndustryConnect_Week5_WebApi.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Sale>>> GetSales()
         {
-            return await _context.Sales.Include(p => p.Product)
-                .Include(c => c.Customer).ToListAsync();
+            //  return await _context.Sales.Include(p => p.Product)
+            //     .Include(c => c.Customer).ToListAsync();
+            return await _context.Sales.ToListAsync();
         }
 
         // GET: api/Sale/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Sale>> GetSale(int id)
+        public async Task<ActionResult<Dtos.SaleDto>> GetSale(int id)
         {
             var sale = await _context.Sales.FindAsync(id);
+          //  var cust = _context.Customers.FindAsync(sale.CustomerId);
+          //  Console.WriteLine("Customer===========");
+          //  Console.WriteLine(cust);
+            // sale.Customer = cust;
 
             if (sale == null)
             {
                 return NotFound();
             }
 
-            return sale;
+            return SaleMapper.EntityToDto(sale) ;
         }
 
         // PUT: api/Sale/5
